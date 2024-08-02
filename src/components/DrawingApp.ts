@@ -1,16 +1,23 @@
+import Player from "./Player";
+
 class DrawingApp {
     private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D;
     private paint: boolean;
+
+    private players: Player[];
+    private currentPlayerIndex: number;
+    private currentWord: string;
 
     private clickX: number[] = [];
     private clickY: number[] = [];
     private clickDrag: boolean[] = [];
 
 
-    constructor(){
+    constructor(players: string[]){
         let canvas = document.getElementById('canvas') as HTMLCanvasElement;
         let context = canvas.getContext('2d') as CanvasRenderingContext2D;
+
 
         let paint:boolean = false;
 
@@ -23,8 +30,38 @@ class DrawingApp {
         this.context = context;
         this.paint = paint;
 
+        this.players = players.map(name => new Player(name))
+        this.currentPlayerIndex = 0;
+        this.currentWord = "";
+
         this.redraw();
         this.createUserEvents();
+        this.startGame();
+    }
+
+    private startGame(){
+        this.currentWord = this.getRandomWord();
+        this.players[this.currentPlayerIndex].setDrawingStatus(true);
+        this.updateUI();
+    }
+
+    private getRandomWord(): string {
+        const words = ['apple', "banana"];
+        return words[Math.floor(Math.random() * words.length)]
+    }
+
+    private nextTurn() {
+        this.players[this.currentPlayerIndex].setDrawingStatus(false);
+        this.currentPlayerIndex = (this.currentPlayerIndex +1) % this.players.length;
+        this.players[this.currentPlayerIndex].setDrawingStatus(true);
+        this.currentWord = this.getRandomWord();
+        this.clearCanvas();
+        this.updateUI();
+    }
+
+    private updateUI(){
+        document.getElementById('currentPlayer')!.textContent = `Current Player : ${this.players[this.currentPlayerIndex].getName()}`;
+        document.getElementById('currentWord')!.textContent = `Current Word : ${this.currentWord}`;
     }
 
     private createUserEvents() {
@@ -41,7 +78,14 @@ class DrawingApp {
         canvas.addEventListener("touchcancel", this.cancelEventHandler);
 
         document.getElementById('clear')!.addEventListener('click', this.clearEventHandler);
+        document.getElementById('guess')!.addEventListener('submit', this.guessEventHandler);
+
+        let docs = document.getElementsByClassName('colors') as HTMLCollection;
+        for(let colors of docs){
+            colors.addEventListener('click', this.getColorValue);
+        }
     }
+
 
     private redraw() {
         let clickX = this.clickX;
@@ -91,6 +135,7 @@ class DrawingApp {
     }
 
     private pressEventHandler = (e: MouseEvent | TouchEvent) => {
+        if (!this.players[this.currentPlayerIndex].isDrawingPlayer()) return;
         let mouseX = (e as TouchEvent).changedTouches ?
                      (e as TouchEvent).changedTouches[0].pageX :
                      (e as MouseEvent).pageX;
@@ -108,6 +153,7 @@ class DrawingApp {
     }
 
     private dragEventHandler = (e: MouseEvent | TouchEvent) => {
+        if (!this.players[this.currentPlayerIndex].isDrawingPlayer()) return;
         let mouseX = (e as TouchEvent).changedTouches ?
                      (e as TouchEvent).changedTouches[0].pageX : 
                      (e as MouseEvent).pageX;
@@ -125,6 +171,32 @@ class DrawingApp {
         }
 
         e.preventDefault();
+    }
+
+    private guessEventHandler = (e: Event) => {
+        e.preventDefault();
+
+        const guessInput = document.getElementById('guessInput') as HTMLInputElement;
+        const guess = guessInput.value.trim().toLowerCase();
+
+        if (guess === this.currentWord.toLowerCase()) {
+            alert(`${this.players[this.currentPlayerIndex].getName()} guessed the word`)
+            this.players[this.currentPlayerIndex].incrementScore(1);
+        } else {
+            alert("Incorrect");
+        }
+
+        guessInput.value = "";
+        this.nextTurn();
+    }
+
+    private getColorValue = (e: Event) => {
+        e.preventDefault();
+
+        const target = e.target as HTMLButtonElement;
+        const element = target.className.split(' ');
+
+        this.context.strokeStyle = element[1];
     }
 }
 
