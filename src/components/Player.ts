@@ -1,4 +1,4 @@
-class Plater {
+class Player {
     private name:string;
     private score:number;
 
@@ -30,3 +30,5 @@ class Plater {
         this.score += points;
     }
 }
+
+export default Player
