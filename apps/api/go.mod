@@ -1,4 +1,4 @@
-module clean
+module pictionary
 
 go 1.22.1
 
