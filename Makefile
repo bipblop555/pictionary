@@ -14,3 +14,6 @@ db-down:
 
 dev:
 	cd $(front) && pnpm run dev
+
+db-seeds: 
+	cd $(back)/internal/database && go run scripts/seed_script.go
