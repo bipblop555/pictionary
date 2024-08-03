@@ -1,12 +1,12 @@
 package main
 
 import (
-	"clean/internal/database"
 	"database/sql"
 	"fmt"
 	"log"
 	"os"
 	"os/signal"
+	"pictionary/internal/database"
 	"syscall"
 
 	"github.com/gofiber/fiber/v3"

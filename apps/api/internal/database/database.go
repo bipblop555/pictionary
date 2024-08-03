@@ -1,11 +1,11 @@
 package database
 
 import (
-	"clean/internal/database/seeds"
-	"clean/internal/env"
 	"fmt"
 	"log"
 	"os"
+	"pictionary/internal/database/seeds"
+	"pictionary/internal/env"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -23,8 +23,10 @@ func InitDb() *gorm.DB {
 		log.Fatal("Error connecting to db ", err)
 	}
 
-	var categoryIds = seeds.SeedCategory(conn)
-	seeds.SeedProduct(conn, categoryIds)
+	var roomsIds = seeds.SeedRooms(conn)
+	var usersIds = seeds.SeedUsers(conn)
+
+	seeds.SeedRoomsUsers(conn, roomsIds, usersIds)
 
 	return conn
 }
