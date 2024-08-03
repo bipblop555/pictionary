@@ -10,7 +10,7 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: ecomm
+      POSTGRES_DB: pictio
 
   adminer:
     image: adminer
