@@ -21,13 +21,13 @@ const App: React.FC = () => {
             <canvas id="canvas" width="1000" height="400" style={{ border: '1px solid black' }}></canvas>
             <div className='drawing' id='palette'>
               <div>
-              <button className='colors red'></button>
+              <button className='colors black'></button>
               <button className='colors blue'></button>
               <button className='colors yellow'></button>
               <button className='colors red'></button>
               </div>
               <div>
-              <button className='colors red'></button>
+              <button className='colors white'></button>
               <button className='colors red'></button>
               <button className='colors red'></button>
               <button className='colors red'></button>

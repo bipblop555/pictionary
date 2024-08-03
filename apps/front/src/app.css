@@ -27,7 +27,9 @@ body{
     height: 600px;
     /* width: 50%; */
 }
-
+.chat{
+    display: flex;
+}
 .drawing{
     border: 1px solid blue;
     height: 200px;
@@ -44,3 +46,5 @@ body{
 .red{background-color: red;}
 .blue{background-color: blue;}
 .yellow{background-color: yellow;}
+.black{background-color: black;}
+.white{background-color: white;}
