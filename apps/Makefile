@@ -1,5 +1,5 @@
-back = apps/api
-front = apps/front
+back = api
+front = front
 
 
 run: 
@@ -15,5 +15,5 @@ db-down:
 dev:
 	cd $(front) && pnpm run dev
 
-db-seeds: 
+db-seed: 
 	cd $(back)/internal/database && go run scripts/seed_script.go
