@@ -26,6 +26,8 @@ func InitDb() *gorm.DB {
 	var roomsIds = seeds.SeedRooms(conn)
 	var usersIds = seeds.SeedUsers(conn)
 
+	seeds.SeedChat(conn, usersIds)
+
 	seeds.SeedRoomsUsers(conn, roomsIds, usersIds)
 
 	return conn
