@@ -3,6 +3,7 @@ package seeds
 import (
 	"log"
 	"pictionary/internal/entities"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -10,8 +11,8 @@ import (
 func SeedRooms(db *gorm.DB) []string {
 	var roomsId []string
 	rooms := []entities.RoomsEntity{
-		{Id: ""},
-		{Id: ""},
+		{Id: "", Time: time.Now()},
+		{Id: "", Time: time.Now()},
 	}
 	for _, room := range rooms {
 		if err := db.Table("rooms").Create(&room).Error; err != nil {
